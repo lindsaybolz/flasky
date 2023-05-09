@@ -11,7 +11,7 @@ migrate = Migrate()
 # Load values from .env
 load_dotenv()
 
-def create_app():
+def create_app(test_config=None):
     # __name__ stores the name of the module we're in
     app = Flask(__name__)
 
@@ -31,10 +31,14 @@ def create_app():
     migrate.init_app(app, db)
 
     # register routes
-    from .routes import crystal_bp
+    from app.routes.crystal_routes import crystal_bp
     app.register_blueprint(crystal_bp)
+
+    from app.routes.healer_routes import healer_bp
+    app.register_blueprint(healer_bp)
 
     # import models
     from app.models.crystal import Crystal
+    from app.models.healer import Healer
 
     return app
